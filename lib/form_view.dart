@@ -50,29 +50,53 @@ class _FormViewState extends State<FormView> {
                       ),
                       Flexible(
                         flex: 1,
-                        child: TextFormField(
-                          controller: nameController,
-                          decoration: InputDecoration(hintText: "nome"),
-                          validator: (text) {
-                            if (text == null || text.isEmpty) {
-                              return 'Nome é obrigatorio';
-                            }
-                            return null;
-                          },
-                        ),
+                        child: FutureBuilder<String>(
+                            future: controller.name,
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData) {
+                                return TextFormField(
+                                  initialValue: snapshot.data,
+                                  onChanged: (value) {
+                                    print(value);
+                                    controller.updateName(value);
+                                  },
+                                  decoration: InputDecoration(hintText: "nome"),
+                                  validator: (text) {
+                                    if (text == null || text.isEmpty) {
+                                      return 'Nome é obrigatorio';
+                                    }
+                                    return null;
+                                  },
+                                );
+                              } else {
+                                return Container();
+                              }
+                            }),
                       ),
                       SizedBox(
                         height: 20,
                       ),
                       Flexible(
-                        child: TextFormField(
-                          controller: sobrenomeController,
-                          decoration: InputDecoration(hintText: "Sobrenome"),
-                          validator: (text) {
-                            if (text == null || text.isEmpty) {
-                              return 'Sobrenome é obrigatorio';
+                        child: FutureBuilder<String>(
+                          future: controller.surname,
+                          builder: (context, snapshot) {
+                            if (snapshot.hasData) {
+                              return TextFormField(
+                                initialValue: snapshot.data,
+                                onChanged: (value) {
+                                  controller.updateSurname(value);
+                                },
+                                decoration:
+                                    InputDecoration(hintText: "Sobrenome"),
+                                validator: (text) {
+                                  if (text == null || text.isEmpty) {
+                                    return 'Sobrenome é obrigatorio';
+                                  }
+                                  return null;
+                                },
+                              );
                             }
-                            return null;
+                            return Container();
                           },
                         ),
                       ),
@@ -92,8 +116,6 @@ class _FormViewState extends State<FormView> {
                         onPressed: () {
                           final isValid = _formKey.currentState?.validate();
                           if (isValid ?? false) {
-                            controller.updateName(nameController.text);
-                            controller.updateSurname(sobrenomeController.text);
                             controller.saveUser();
 
                             return;

@@ -4,4 +4,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 abstract class InternalStorageAdapter {
   void saveUser(String name, String surname);
   Future<String> getFullName();
+  Future<String> getName();
+  Future<String> getSurname();
+  void saveName(String name);
+  void saveSurname(String surname);
 }

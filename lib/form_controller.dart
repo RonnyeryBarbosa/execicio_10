@@ -3,16 +3,16 @@ import 'package:internal_storege/form_model.dart';
 class ControllerForm {
   FormModel _model = FormModel();
 
-  String get name => _model.name ?? '';
-  String get surname => _model.surname ?? '';
   Future<String> get fullname => _model.getFullName();
+  Future<String> get name => _model.getName();
+  Future<String> get surname => _model.getSurname();
 
   void updateName(String name) {
-    _model.name = name;
+    _model.saveName(name);
   }
 
   void updateSurname(String surname) {
-    _model.surname = surname;
+    _model.saveSurname(surname);
   }
 
   void saveUser() {
